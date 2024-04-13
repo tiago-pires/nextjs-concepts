@@ -1,27 +1,16 @@
 import { NextResponse, NextRequest } from "next/server";
+import prisma from "@/prisma/client";
 
 interface Props {
-  params: { id: number };
-}
-
-// Source users form DB, hardcoded here  (localstorage wont work, this happens on the server!)
-function getUserById(id) {
-  const users = [
-    { id: "1", name: "Tiago" },
-    { id: "2", name: "Bruno" },
-    { id: "3", name: "Lucas" },
-  ];
-  const user = users.find((user) => user.id === id);
-
-  if (!user) return false;
-
-  return user;
+  params: { id: string };
 }
 
 // Read record `curl http://localhost:3000/api/users/2`
 export async function GET(request, { params: { id } }: Props) {
   // get single user (remember: url id is a string)
-  const user = getUserById(id);
+  const user = await prisma.user.findUnique({
+    where: { id: parseInt(id) },
+  }); // returns `null` if not found
 
   // handle non existing user
   if (!user)
