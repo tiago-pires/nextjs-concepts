@@ -1,14 +1,9 @@
 import { NextResponse, NextRequest } from "next/server";
-
-// Source users form DB, hardcoded here  (localstorage wont work, this happens on the server!)
-const users = [
-  { id: 1, name: "Tiago" },
-  { id: 2, name: "Bruno" },
-  { id: 3, name: "Lucas" },
-];
+import prisma from "@/prisma/client";
 
 // Read users `curl http://localhost:3000/api/users`
-export function GET(request: NextRequest) {
+export async function GET(request: NextRequest) {
+  const users = await prisma.user.findMany();
   return NextResponse.json(users, { status: 200 });
 }
 
@@ -23,8 +18,5 @@ export async function POST(request: NextRequest) {
   // create user in DB (with new id)
 
   // response
-  return NextResponse.json(
-    { id: users.length + 1, name: body.name },
-    { status: 201 },
-  );
+  return NextResponse.json({ todo: "will create user next" }, { status: 201 });
 }
