@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import prisma from "@/prisma/client";
+import schema from "./schema";
 
 // Read users `curl http://localhost:3000/api/users`
 export async function GET(request: NextRequest) {
@@ -11,13 +12,11 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const body = await request.json();
 
+  const validation = schema.safeParse(body);
+
   // validate request body
-  if (!body.name || !body.email) {
-    return NextResponse.json(
-      { error: "Name or Email is required" },
-      { status: 400 },
-    );
-  }
+  if (!validation.success)
+    return NextResponse.json(validation.error.errors, { status: 400 });
 
   // check user with this email does not yet exist
   const existingUser = await prisma.user.findUnique({
