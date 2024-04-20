@@ -24,8 +24,16 @@ async function getUsers() {
 }
 
 export default async function Page() {
-  const posts: Post[] = await getPosts();
-  const users: User[] = await getUsers();
+  const postsProm = getPosts();
+  const usersProm = getUsers();
+
+  // await for all promises
+
+  const [posts, users]: [Post[], User[]] = await Promise.all([
+    postsProm,
+    usersProm,
+  ]);
+
   return (
     <>
       <h2>Posts</h2>
