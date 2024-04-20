@@ -1,7 +1,2 @@
-export default function Home() {
-  return (
-    <main>
-      Start the Challenge
-    </main>
-  );
-}
+import Link from "next/link";
+export default async function Page() {}

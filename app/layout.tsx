@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,7 +13,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body id="body">
+        {children}
+        <hr />
+        <ul id="nav">
+          <h2>Examples</h2>
+          <li>
+            <Link href="/fetch/">Server: fetching</Link>
+          </li>
+          <li>
+            <Link href="/fetch/parallel/">Server: parallel fetching</Link>
+          </li>
+        </ul>
+      </body>
     </html>
   );
 }
